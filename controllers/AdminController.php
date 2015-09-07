@@ -99,8 +99,6 @@ class AdminController extends Controller
 
             // Load attributes into the model
             $model->attributes = $_POST['AnonAccountRegisterForm'];
-            print_r($model->image); 
-            exit();
 
             // Make the username from the first and lastnames
             $model->username = strtolower($model->firstName . "_" . $model->lastName);

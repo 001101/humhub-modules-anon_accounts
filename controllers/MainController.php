@@ -48,51 +48,9 @@ class MainController extends Controller{
 		$profileModel->lastname = $randomLastName;
 		$profileModel->firstname = $randomFirstName;
         
-        // Make the username from the first and lastnames
-        $userModel->username = str_replace(" ", "_", strtolower($profileModel->firstname . "_" . $profileModel->lastname));
+        // Make the username from the first and lastnames (only first 25 chars)
+        $userModel->username = substr(str_replace(" ", "_", strtolower($profileModel->firstname . "_" . $profileModel->lastname)), 0, 25);
 
-
-        /*
-        $model = new AnonAccountRegisterForm();
-		
-		if(isset($_POST['AnonAccountRegisterForm'])) {
-
-            // Pre-set the random first and last name
-            $model->firstName = trim($randomFirstName);
-            $model->lastName = trim($randomLastName);
-
-            // Load attributes into the model
-            $model->attributes = $_POST['AnonAccountRegisterForm'];
-
-            // Make the username from the first and lastnames
-            $model->username = strtolower($model->firstName . "_" . $model->lastName);
-
-            // Set email based on UserInvite email value
-            $model->email = $userInvite->email;
-
-            // Validate
-            if($model->validate()) {
-
-                // Create temporary file
-                $temp_file_name = tempnam(sys_get_temp_dir(), 'img') . '.png';
-                $fp = fopen($temp_file_name,"w");
-                fwrite($fp, file_get_contents($model->image));
-                fclose($fp);
-
-                // Store profile image for user
-                $profileImage = new ProfileImage(Yii::app()->user->guid);
-                $profileImage->setNew($temp_file_name);
-
-                // Remove temporary file 
-                unlink($temp_file_name);
-
-                // Finished. Redirect away!
-                $this->redirect($this->createUrl('//anon_accounts/admin/rand', array()));
-
-            } else {
-                echo "Error processing account register form";
-            }
-		}*/
 		///////////////////////////////////////////////////////
 
         // Build Form Definition
@@ -116,7 +74,7 @@ class MainController extends Controller{
             'type' => 'form', 
             'elements' => array(
                 'image' => array(
-                    'type' => 'textarea',
+                    'type' => 'hidden',
                     'class' => 'form-control',
                     'id' => 'image'
                 ),
@@ -132,7 +90,7 @@ class MainController extends Controller{
             'title' => 'Password',
             'elements' => array(
                 'username' => array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'class' => 'form-control',
                     'maxlength' => 25,
                 ),
@@ -182,11 +140,6 @@ class MainController extends Controller{
         $form['Profile']->model = $profileModel;
         $form['IdenticonForm']->model = $identiconForm;
 
-        // if(isset($_POST['IdenticonForm'])) {
-        //     $identiconForm->attributes = $_POST['IdenticonForm'];
-        //     print_r($identiconForm);
-        //     exit("S");
-        // }
 
         /// ----- WE DONT WANT TO SAVE YET -------
         if ($form->submitted('save') && $form->validate() && $identiconForm->validate()) {
