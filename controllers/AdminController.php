@@ -113,7 +113,7 @@ class AdminController extends Controller
                 fclose($fp);
 
                 // Store profile image for user
-                $profileImage = new ProfileImage(Yii::app()->user->guid);
+                $profileImage = new ProfileImage($model->guid);
                 $profileImage->setNew($temp_file_name);
 
                 // Remove temporary file 

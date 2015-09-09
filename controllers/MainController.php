@@ -199,10 +199,10 @@ class MainController extends Controller{
 
     /** 
      * Uploads the identicon profile picture
-     * @param int User ID
+     * @param int guid
      * @param Base64 Image (identicon)
      */
-    private function uploadProfilePicture($userId, $data) 
+    private function uploadProfilePicture($guid, $data) 
     {
 
         // Create temporary file
@@ -212,7 +212,7 @@ class MainController extends Controller{
         fclose($fp);
 
         // Store profile image for user
-        $profileImage = new ProfileImage($userId);
+        $profileImage = new ProfileImage($guid);
         $profileImage->setNew($temp_file_name);
 
         // Remove temporary file 
