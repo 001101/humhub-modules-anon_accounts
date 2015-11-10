@@ -1,36 +1,31 @@
 <?php
 
-class AdminController extends Controller
+namespace humhub\modules\anon_accounts\controllers;
+
+use Yii;
+use humhub\models\Setting;
+use yii\helpers\Url;
+use humhub\compat\HForm;
+use humhub\modules\anon_accounts\forms\AnonAccountsForm;
+
+
+class AdminController extends \humhub\modules\admin\components\Controller
 {
-     public $subLayout = "application.modules_core.admin.views._layout";
+
+    public $subLayout = "@humhub/modules/admin/views/_layout";
 
     /**
-     * @return array action filters
+     * @inheritdoc
      */
-    public function filters()
+    public function behaviors()
     {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
+        return [
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'adminOnly' => true
+            ]
+        ];
     }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'expression' => 'Yii::app()->user->isAdmin()',
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
-
     /**
      * Configuration Action for Super Admins
      */
@@ -44,21 +39,21 @@ class AdminController extends Controller
 
             if ($form->validate()) {
 
-                $form->anonAccountsFirstNameOptions = HSetting::SetText('anonAccountsFirstNameOptions', $form->anonAccountsFirstNameOptions);
-                $form->anonAccountsLastNameOptions = HSetting::SetText('anonAccountsLastNameOptions', $form->anonAccountsLastNameOptions);
+                $form->anonAccountsFirstNameOptions = Setting::SetText('anonAccountsFirstNameOptions', $form->anonAccountsFirstNameOptions);
+                $form->anonAccountsLastNameOptions = Setting::SetText('anonAccountsLastNameOptions', $form->anonAccountsLastNameOptions);
 
                 // set flash message
-                Yii::app()->user->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+                Yii::$app->getSession()->setFlash('data-saved', 'Saved');
 
-                $this->redirect(Yii::app()->createUrl('//anon_accounts/admin/index'));
+                return $this->redirect(Url::toRoute('index'));
             }
 
         } else {
-            $form->anonAccountsFirstNameOptions = HSetting::GetText('anonAccountsFirstNameOptions');
-            $form->anonAccountsLastNameOptions = HSetting::GetText('anonAccountsLastNameOptions');
+            $form->anonAccountsFirstNameOptions = Setting::GetText('anonAccountsFirstNameOptions');
+            $form->anonAccountsLastNameOptions = Setting::GetText('anonAccountsLastNameOptions');
         }
 
-        $this->render('index', array(
+        return $this->render('index', array(
             'model' => $form
         ));
 

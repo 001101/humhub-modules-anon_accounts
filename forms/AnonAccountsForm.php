@@ -1,10 +1,14 @@
 <?php
 
+namespace humhub\modules\anon_accounts\forms;
+
+use Yii;
+
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class AnonAccountsForm extends CFormModel {
+class AnonAccountsForm extends \yii\base\Model {
 
     public $anonAccountsFirstNameOptions;
     public $anonAccountsLastNameOptions;
