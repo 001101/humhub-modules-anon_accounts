@@ -1,16 +1,11 @@
 <?php
 /**
  * Create account page, after the user clicked the email validation link.
- *
- * @property CFormModel $model is the create account form.
- * @property Boolean $needApproval indicates that new users requires admin approval.
- *
- * @package humhub.modules_core.user.views
- * @since 0.5
  */
-//$this->pageTitle = Yii::t('UserModule.views_auth_createAccount', '<strong>Account</strong> registration');
+
+
+humhub\modules\anon_accounts\Assets::register($this);
 ?>
-TEST
 <div class="container" style="text-align: center;">
     <h1 id="app-title" class="animated fadeIn"><?php echo Yii::$app->name; ?></h1>
     <br/>
@@ -56,7 +51,7 @@ TEST
         // Update the jdenticon canvas and dataURL input value
         function generateJdenticon(value) {
             jdenticon.update("#identicon", md5(value));
-            $("#image").val($("#identicon").get(0).toDataURL());
+            $("#identiconform-image").val($("#identicon").get(0).toDataURL());
         }
 
         // Listen for changes
