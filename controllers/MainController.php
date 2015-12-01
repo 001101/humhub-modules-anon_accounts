@@ -12,11 +12,14 @@ use humhub\compat\HForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\anon_accounts\forms\IdenticonForm;
+use humhub\libs\ProfileImage;
 
 
 class MainController extends \humhub\modules\user\controllers\AuthController {
 
     public function actionIndex(){
+
+
         $needApproval = Setting::Get('needApproval', 'authentication_internal');
 
         if (!Yii::$app->user->isGuest)
