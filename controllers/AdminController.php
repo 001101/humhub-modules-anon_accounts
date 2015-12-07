@@ -7,7 +7,7 @@ use humhub\models\Setting;
 use yii\helpers\Url;
 use humhub\compat\HForm;
 use humhub\modules\anon_accounts\forms\AnonAccountsForm;
-
+use humhub\libs\ProfileImage;
 
 class AdminController extends \humhub\modules\admin\components\Controller
 {
@@ -26,6 +26,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             ]
         ];
     }
+
     /**
      * Configuration Action for Super Admins
      */
@@ -65,7 +66,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionRand() {
         
-        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../resources', true, 0, defined('YII_DEBUG'));
+        $assetPrefix = Yii::app()->assetManager->publish(dirname(__FILE__) . '/../assets', true, 0, defined('YII_DEBUG'));
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/md5.min.js');
         Yii::app()->clientScript->registerScriptFile($assetPrefix . '/jdenticon-1.3.0.min.js');
 
@@ -78,7 +79,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         ////// Save DataURL as Image ///////
         // @TODO: Pull this from $_POST
         // $data = "data:image/png;base64,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";
-        // $filePath = dirname(__FILE__) . '/../resources/test.png';
+        // $filePath = dirname(__FILE__) . '/../assets/test.png';
         // $fp = fopen($filePath,"w");
         // fwrite($fp, file_get_contents($data));
         // fclose($fp);
