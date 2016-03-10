@@ -12,8 +12,6 @@ use humhub\libs\ProfileImage;
 class AdminController extends \humhub\modules\admin\components\Controller
 {
 
-    public $subLayout = "@humhub/modules/admin/views/_layout";
-
     /**
      * @inheritdoc
      */
