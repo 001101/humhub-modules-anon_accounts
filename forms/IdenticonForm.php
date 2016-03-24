@@ -3,7 +3,10 @@
 /**
  * @package anon_accounts.forms
  */
-class IdenticonForm extends CFormModel {
+namespace humhub\modules\anon_accounts\forms;
+
+class IdenticonForm extends \yii\base\Model
+{
 
     public $image;
 
