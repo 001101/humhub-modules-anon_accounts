@@ -3,11 +3,10 @@
 namespace humhub\modules\anon_accounts\controllers;
 
 use Yii;
-use humhub\models\Setting;
 use yii\helpers\Url;
-use humhub\compat\HForm;
-use humhub\modules\anon_accounts\forms\AnonAccountsForm;
+use humhub\models\Setting;
 use humhub\libs\ProfileImage;
+use humhub\modules\anon_accounts\forms\AnonAccountsForm;
 
 class AdminController extends \humhub\modules\admin\components\Controller
 {
